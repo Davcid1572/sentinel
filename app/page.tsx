@@ -1,26 +1,15 @@
-import { Button } from "@/components/ui/button";
-import React from "react";
-import ThemeToggler from "@/components/HelperComponent/ThemeToggler";
+// app/page.tsx
+import { DashboardShell } from "@/components/Dashboard-Shell";
 
-const page = () => {
+export default function Home() {
   return (
-    <div className="min-h-screen flex justify-center items-center bg-white dark:bg-amber-900 transition-all duration-300">
-      <div className="max-w-3xl text-center space-y-10">
-        <h1 className="text-3xl font-semibold">Dark Mode</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-          delectus nam nulla officiis fugit, reprehenderit perspiciatis natus
-          iste neque, distinctio asperiores numquam est itaque explicabo
-          voluptatem eaque earum repellat omnis?
+    <DashboardShell>
+      <div className="max-w-3xl mx-auto space-y-4 text-white">
+        {/* We will put the chat messages and input here next */}
+        <p className="text-zinc-500 text-center mt-20">
+          Awaiting input to begin infrastructure scan...
         </p>
-        <div className="space-x-3">
-          <Button>Button 1</Button>
-          <Button variant={"secondary"}>Button 1</Button>
-        </div>
-        <ThemeToggler />
       </div>
-    </div>
+    </DashboardShell>
   );
-};
-
-export default page;
+}

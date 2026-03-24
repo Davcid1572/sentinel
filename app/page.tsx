@@ -4,6 +4,8 @@ import { useChat } from "@ai-sdk/react";
 import { DashboardShell } from "@/components/Dashboard-Shell";
 import { Send } from "lucide-react";
 import { useState } from "react";
+import { SecurityCard } from "@/components/SecurityCard";
+import { toolInvocation } from "ai";
 
 export default function Home() {
   // In SDK 5.0+, you manage the input state yourself for maximum performance
@@ -53,11 +55,41 @@ export default function Home() {
                 </span>
 
                 {/* SDK 5.0 rendering: Messages are made of 'parts' */}
-                {m.parts.map((part, index) =>
-                  part.type === "text" ? (
-                    <span key={index}>{part.text}</span>
-                  ) : null,
-                )}
+                {m.parts.map((part, index) => {
+                  if (part.type === "text") {
+                    return <span key={index}>{part.text}</span>;
+                  }
+
+                  if (part.type === "tool-invocation") {
+                    const { toolName, state, result } = part.toolInvocation;
+
+                    // While the tool is running
+                    if (state === "call") {
+                      return (
+                        <div key={index} className="italic text-zinc-500">
+                          Scanning {toolName}...
+                        </div>
+                      );
+                    }
+
+                    // Once we have the result, show the SecurityCard!
+                    if (
+                      state === "result" &&
+                      toolName === "scan_infrastructure"
+                    ) {
+                      return (
+                        <SecurityCard
+                          key={index}
+                          riskLevel={result.riskLevel}
+                          issue={result.issue}
+                          resource={result.resource}
+                          recommendation={result.recommendation}
+                        />
+                      );
+                    }
+                  }
+                  return null;
+                })}
               </div>
             </div>
           ))}
